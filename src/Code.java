@@ -4,11 +4,11 @@ public class Code {
                 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'Ł',
                 'M', 'N', 'Ń', 'O', 'Ó', 'P', 'R', 'S',
                 'Ś', 'T', 'U', 'W', 'Y', 'Z', 'Ź', 'Ż'};
-        String message = "Ala ma kota, kot ma Ale";
-        int shift = 2;
+        String message = "MĘŻNY BĄDŹ, CHROŃ PUŁK TWÓJ I SZEŚĆ FLAG";
+        int shift = 3;
         String codedMessage = codeMessage(message, array, shift);
         System.out.println(codedMessage);
-        System.out.println(decodedMessage(codedMessage, array, shift));
+        System.out.println(decodedMessage(codedMessage, array, -shift));
     }
 
     private static String codeMessage(String message, char[] array, int shift) {
@@ -19,7 +19,7 @@ public class Code {
         for (int i = 0; i < message.length(); i++) {
             if (ifContainsNumberInAlphabet(messageArray[i], array) != -1) {
                 int number = ifContainsNumberInAlphabet(messageArray[i], array);
-                codedMessage[i] = array[number + shift];
+                codedMessage[i] = array[properNumber(number, shift)];
             } else {
                 codedMessage[i] = messageArray[i];
             }
@@ -36,7 +36,17 @@ public class Code {
         return -1;
     }
 
+    private static int properNumber(int number, int shift) {
+        if((number + shift) <= 31 && (number + shift) >= 0) {
+            return number + shift;
+        } else if ((number + shift) > 31) {
+            return (number + shift) % 31 - 1;
+        } else {
+            return 31 - Math.abs(shift) + (number + 1);
+        }
+    }
+
     private static String decodedMessage(String codedMessage, char[] array, int shift) {
-        return codeMessage(codedMessage, array, -shift);
+        return codeMessage(codedMessage, array, shift);
     }
 }
